@@ -1,1 +1,7 @@
 langchain
+python-dotenv
+langchain-openai
+langchain-community
+langchain-core
+bs4
+faiss-cpu
