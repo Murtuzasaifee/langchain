@@ -16,6 +16,7 @@ load_dotenv()
 os.environ['OPENAI_API_KEY'] = os.getenv("OPENAI_API_KEY")
 os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_PROJECT"]="Research-Paper-Summarizer"
 
 # Streamlit Page Config
 st.set_page_config(
@@ -53,7 +54,7 @@ if st.button("Process PDFs") and uploaded_files:
         # Split text into manageable chunks
         text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=1000,
-            chunk_overlap=100,
+            chunk_overlap=300,
             separators=["\n\n", "\n", " ", ""]
         )
 
