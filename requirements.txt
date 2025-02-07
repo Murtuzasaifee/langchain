@@ -8,3 +8,6 @@ faiss-cpu
 streamlit
 pypdf
 tiktoken
+transformers
+torch
+sentence-transformers
