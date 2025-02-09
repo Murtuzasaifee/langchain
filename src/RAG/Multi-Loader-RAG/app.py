@@ -68,6 +68,7 @@ def split_documents(docs, chunk_size, chunk_overlap):
 def create_vector_store(splits):
     embeddings = OpenAIEmbeddings()
     vectorstore = FAISS.from_documents(splits, embeddings)
+    vectorstore.save_local("faiss_index")
     return vectorstore
 
 # Main app logic
@@ -82,23 +83,28 @@ if st.button("Process Documents"):
             # Split documents
             splits = split_documents(documents, 1000, 300)
             
-            # Create FAISS vector store
-            st.session_state.vector_store = create_vector_store(splits)
+            # Create FAISS vector store and save locally
+            create_vector_store(splits)
             
             st.success("Documents processed and FAISS vector store created!")
 
-st.header("Get Summary/Answer")
+# Query the vector store
+st.header("Query the Vector Store")
 query = st.text_input("Enter your query")
 
 if st.button("Search"):
-    if st.session_state.vector_store is None:
+    if not os.path.exists("faiss_index"):
         st.error("Please process documents first.")
     elif not query:
         st.error("Please enter a query.")
     else:
-        with st.spinner("Searching..."): 
+        with st.spinner("Searching..."):
+            # Load the FAISS vector store from local
+            embeddings = OpenAIEmbeddings()
+            vector_store = FAISS.load_local("faiss_index", embeddings, allow_dangerous_deserialization=True)
+             
             # Create retriever and chain
-            retriever = st.session_state.vector_store.as_retriever(
+            retriever = vector_store.as_retriever(
                 search_type="similarity",
                 search_kwargs={"k": 5}
             )
