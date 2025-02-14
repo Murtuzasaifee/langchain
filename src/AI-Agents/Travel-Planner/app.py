@@ -50,7 +50,7 @@ travel_tool = Tool(
 )
 
 # Initializing LangChain Agent
-llm = ChatOpenAI(model='gpt-4o',temperature=0.7, max_tokens=2048)
+llm = ChatOpenAI(model='gpt-4o',temperature=0.7, max_tokens=1024)
 agent = initialize_agent(
     tools=[flight_tool, travel_tool],
     llm=llm,
